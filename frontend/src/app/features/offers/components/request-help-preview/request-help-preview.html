@@ -1,0 +1,22 @@
+<div class="preview-container">
+  <h1>SkillSwap – Request Help Preview</h1>
+  <p>This page is for testing the Request Help pop-up.</p>
+
+  <button class="open-button" (click)="openDialog()">Request Help</button>
+
+  @if (submittedMessage) {
+    <div class="success-message">
+      {{ submittedMessage }}
+    </div>
+  }
+
+  @if (showDialog) {
+    <app-request-help
+      [offerId]="1"
+      [offerTitle]="'Java Programming Help'"
+      (close)="closeDialog()"
+      (requestSubmitted)="onRequestSubmitted($event)"
+    >
+    </app-request-help>
+  }
+</div>

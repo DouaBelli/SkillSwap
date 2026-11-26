@@ -1,0 +1,39 @@
+<div class="dialog-overlay">
+  <div class="request-dialog">
+    <div class="dialog-header">
+      <div>
+        <h2>Request Help</h2>
+        <p>Send a request to the student offering this service.</p>
+      </div>
+
+      <button class="close-button" type="button" (click)="closeDialog()">&times;</button>
+    </div>
+
+    <div class="offer-information">
+      <span class="offer-label">You are requesting help with:</span>
+      <h3>{{ offerTitle }}</h3>
+    </div>
+
+    <form (ngSubmit)="submitRequest()">
+      <label for="requestMessage"> Message <span>(Optional)</span> </label>
+
+      <textarea
+        id="requestMessage"
+        name="message"
+        [(ngModel)]="message"
+        maxlength="1000"
+        rows="5"
+        placeholder="Explain what you need help with..."
+      >
+      </textarea>
+
+      <div class="character-count">{{ message.length }}/1000</div>
+
+      <div class="dialog-actions">
+        <button type="button" class="cancel-button" (click)="closeDialog()">Cancel</button>
+
+        <button type="submit" class="submit-button">Send Request</button>
+      </div>
+    </form>
+  </div>
+</div>

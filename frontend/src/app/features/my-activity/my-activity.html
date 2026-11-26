@@ -1,0 +1,113 @@
+<div class="activity-container">
+  <div class="page-header">
+    <div>
+      <h1>My Activity</h1>
+      <p>Manage your help requests and volunteering activities.</p>
+    </div>
+  </div>
+
+  <div class="activity-tabs">
+    <button [class.active]="activeTab() === 'sent'" (click)="switchTab('sent')">
+      Sent Requests
+    </button>
+
+    <button [class.active]="activeTab() === 'received'" (click)="switchTab('received')">
+      Received Requests
+    </button>
+  </div>
+
+  <div class="activity-content">
+    @if (activeTab() === 'sent') {
+      <div class="requests-list">
+        @for (request of sentRequests; track request.requestId) {
+          <div class="request-card">
+            <div class="request-header">
+              <h2>{{ request.offerTitle }}</h2>
+              <span class="status">{{ request.status }}</span>
+            </div>
+
+            <p class="student-name">Volunteer: {{ request.studentName }}</p>
+
+            <p class="request-message">
+              {{ request.message }}
+            </p>
+
+            <div class="request-actions">
+              @for (action of request.actions; track action) {
+                <button
+                  class="action-button"
+                  [ngClass]="actionClass(action)"
+                  (click)="handleAction(request, action)"
+                >
+                  {{ actionLabel(action) }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (activeTab() === 'received') {
+      <div class="requests-list">
+        @for (request of receivedRequests; track request.requestId) {
+          <div class="request-card">
+            <div class="request-header">
+              <h2>{{ request.offerTitle }}</h2>
+              <span class="status">{{ request.status }}</span>
+            </div>
+
+            <p class="student-name">Requester: {{ request.studentName }}</p>
+
+            <p class="request-message">
+              {{ request.message }}
+            </p>
+
+            <div class="request-actions">
+              @for (action of request.actions; track action) {
+                <button
+                  class="action-button"
+                  [ngClass]="actionClass(action)"
+                  (click)="handleAction(request, action)"
+                >
+                  {{ actionLabel(action) }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+@if (showCancelDialog()) {
+  <div class="dialog-overlay">
+    <div class="cancel-dialog">
+      <h2>Cancel Request</h2>
+
+      <p>Please tell us why you want to cancel this request.</p>
+
+      <textarea
+        [(ngModel)]="cancelReason"
+        placeholder="Enter your reason..."
+        rows="4"
+        maxlength="500"
+        required
+      >
+      </textarea>
+
+      <div class="dialog-actions">
+        <button class="cancel-button" (click)="closeCancelDialog()">Go Back</button>
+
+        <button
+          class="confirm-button"
+          [disabled]="!cancelReason.trim() || cancelReason.trim().length > 500"
+          (click)="confirmCancel()"
+        >
+          Confirm Cancellation
+        </button>
+      </div>
+    </div>
+  </div>
+}
