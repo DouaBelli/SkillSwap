@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RequestHelp } from '../request-help/request-help';
+import { RequestService } from '../../../../core/services/request/request.service';
 
 @Component({
   selector: 'app-request-help-preview',
@@ -8,13 +10,29 @@ import { RequestHelp } from '../request-help/request-help';
   styleUrl: './request-help-preview.css',
 })
 export class RequestHelpPreview {
+  private readonly requestService = inject(RequestService);
+
   showDialog = true;
   submittedMessage = '';
+  errorMessage = '';
+  loading = false;
 
   onRequestSubmitted(event: { offerId: number; message: string }): void {
-    this.submittedMessage = `Request submitted for offer #${event.offerId}. Message: ${event.message || '(No message)'}`;
+    this.loading = true;
+    this.errorMessage = '';
 
-    this.showDialog = false;
+    this.requestService.createRequest(event).subscribe({
+      next: (response) => {
+        this.submittedMessage = response.message;
+        this.showDialog = false;
+        this.loading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Request submission error:', error);
+        this.errorMessage = error.error?.message ?? 'Could not submit your request.';
+        this.loading = false;
+      },
+    });
   }
 
   closeDialog(): void {
@@ -23,6 +41,7 @@ export class RequestHelpPreview {
 
   openDialog(): void {
     this.submittedMessage = '';
+    this.errorMessage = '';
     this.showDialog = true;
   }
 }
