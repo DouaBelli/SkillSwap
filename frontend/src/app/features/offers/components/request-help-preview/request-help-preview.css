@@ -1,0 +1,42 @@
+.preview-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  color: #30205c;
+}
+
+.preview-container h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.preview-container p {
+  color: #77748a;
+  margin-bottom: 25px;
+}
+
+.open-button {
+  background: #7046c8;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.open-button:hover {
+  background: #5833a6;
+}
+
+.success-message {
+  margin-top: 25px;
+  padding: 16px;
+  background: #e8f7ef;
+  color: #18784e;
+  border: 1px solid #b8e5ce;
+  border-radius: 8px;
+  line-height: 1.5;
+}
