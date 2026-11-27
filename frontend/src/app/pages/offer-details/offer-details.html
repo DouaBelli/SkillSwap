@@ -1,0 +1,76 @@
+<section class="page">
+  <a routerLink="/offers">&larr; Back to offers</a>
+
+  @if (notice()) {
+    <div class="alert alert-success" role="status">{{ notice() }}</div>
+  }
+  @if (error()) {
+    <div class="alert alert-error" role="alert">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Loading offer...</p>
+  } @else if (offer(); as o) {
+    <div class="card">
+      <div class="row-between">
+        <h1>{{ o.title }}</h1>
+        <span class="tag">{{ o.categoryName }}</span>
+      </div>
+
+      @if (o.status !== 'ACTIVE') {
+        <div class="alert alert-error">This offer is hidden. Only you can see it.</div>
+      }
+
+      <p>{{ o.description }}</p>
+
+      <p><strong>Available:</strong> {{ o.availability }}</p>
+      <p><strong>How I can help:</strong> {{ o.helpMethod }}</p>
+      <p>
+        <strong>Volunteer:</strong> {{ o.volunteerName }} &middot; {{ o.departmentName }} &middot; Year {{ o.yearOfStudy }}
+        &middot; <a [routerLink]="['/profile', o.volunteerId]">View profile</a>
+      </p>
+      <p class="muted">Posted {{ o.createdAt | date: 'mediumDate' }}</p>
+
+      <div class="row">
+        @if (o.mine) {
+          @if (o.status === 'ACTIVE') {
+            <a class="btn btn-secondary" [routerLink]="['/offers', o.offerId, 'edit']">Edit</a>
+            <button type="button" class="btn btn-danger" (click)="hide()">Hide</button>
+          }
+        } @else {
+          <button type="button" class="btn btn-primary" (click)="openRequest()">Request help</button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (showRequest()) {
+    <div class="overlay">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="request-title">
+        <h2 id="request-title">Request help</h2>
+        <p class="muted">Write a short message so the volunteer knows what you need.</p>
+
+        @if (requestError()) {
+          <div class="alert alert-error" role="alert">{{ requestError() }}</div>
+        }
+
+        <div class="field">
+          <label for="request-message">Message (optional)</label>
+          <textarea
+            id="request-message"
+            maxlength="1000"
+            [value]="requestMessage()"
+            (input)="requestMessage.set($any($event.target).value)"
+          ></textarea>
+        </div>
+
+        <div class="row">
+          <button type="button" class="btn btn-primary" [disabled]="sending()" (click)="sendRequest()">
+            {{ sending() ? 'Sending...' : 'Send request' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="closeRequest()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+</section>
