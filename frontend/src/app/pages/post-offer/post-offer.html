@@ -1,0 +1,61 @@
+<section class="page">
+  <h1>{{ editId === null ? 'Post an offer' : 'Edit offer' }}</h1>
+
+  @if (error()) {
+    <div class="alert alert-error" role="alert">{{ error() }}</div>
+  }
+
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" maxlength="100" />
+      @if (showError('title')) {
+        <span class="field-error">Please enter a title (up to 100 characters).</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="category">Category</label>
+      <select id="category" formControlName="categoryId">
+        <option [ngValue]="null" disabled>Choose a category</option>
+        @for (c of categories(); track c.id) {
+          <option [ngValue]="c.id">{{ c.name }}</option>
+        }
+      </select>
+      @if (showError('categoryId')) {
+        <span class="field-error">Choose a category.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" maxlength="1000"></textarea>
+      @if (showError('description')) {
+        <span class="field-error">Please describe your offer (up to 1000 characters).</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="availability">Availability</label>
+      <input id="availability" type="text" formControlName="availability" maxlength="100" />
+      @if (showError('availability')) {
+        <span class="field-error">Please enter when you are available.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="helpMethod">Help method</label>
+      <input id="helpMethod" type="text" formControlName="helpMethod" maxlength="100" placeholder="How will you help?" />
+      @if (showError('helpMethod')) {
+        <span class="field-error">Please say how you will help.</span>
+      }
+    </div>
+
+    <div class="row">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">
+        {{ saving() ? 'Saving...' : editId === null ? 'Post offer' : 'Save changes' }}
+      </button>
+      <a class="btn btn-secondary" routerLink="/offers">Cancel</a>
+    </div>
+  </form>
+</section>
