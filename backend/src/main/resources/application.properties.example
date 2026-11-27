@@ -4,3 +4,4 @@ spring.datasource.username=postgres
 spring.datasource.password=CHANGE_ME
 spring.jpa.hibernate.ddl-auto=validate
 spring.profiles.active=dev
+skillswap.email-domain=alexu.edu.eg
