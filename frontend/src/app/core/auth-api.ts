@@ -31,4 +31,10 @@ export class AuthApi {
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(`${API_URL}/auth/login`, { email, password });
   }
+    forgot(email: string) {
+    return this.http.post<{ message: string }>(`${API_URL}/auth/forgot`, { email });
+  }
+  reset(email: string, code: string, newPassword: string) {
+    return this.http.post<{ message: string }>(`${API_URL}/auth/reset`, { email, code, newPassword });
+  }
 }
