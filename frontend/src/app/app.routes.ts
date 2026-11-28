@@ -12,6 +12,7 @@ import { Login } from './pages/login/login';
 
 import { MyActivity } from './features/my-activity/my-activity';
 import { RequestHelpPreview } from './features/offers/components/request-help-preview/request-help-preview';
+import { ResetPassword } from './pages/reset-password/reset-password';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'offers' },
@@ -19,7 +20,7 @@ export const routes: Routes = [
   // Authentication
   { path: 'register', component: Register },
   { path: 'verify', component: Verify },
-  { path: 'login', component: Login },
+  { path: 'login', component: Login },  { path: 'reset-password', component: ResetPassword },
 
   // Offers
   { path: 'offers', component: BrowseOffers, canActivate: [authGuard] },
