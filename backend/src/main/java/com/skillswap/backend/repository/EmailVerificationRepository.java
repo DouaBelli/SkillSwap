@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface EmailVerificationRepository extends JpaRepository<EmailVerification, Integer> {
     Optional<EmailVerification> findFirstByUserAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(
             User user, String purpose);
+            Optional<EmailVerification> findFirstByUserOrderByCreatedAtDesc(User user);
 }
