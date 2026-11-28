@@ -28,7 +28,9 @@ public class LoginService {
         if (!u.isVerified()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "NOT_VERIFIED");
         }
-        // TODO: blocked check (user_block table) once the moderation tables exist
+        if (users.isBlocked(u.getId())) {
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account is blocked.");
+}
         return new LoginResponse(jwt.generate(u), u.getId(), u.getFullName(), u.getRole().getName());
     }
 }
