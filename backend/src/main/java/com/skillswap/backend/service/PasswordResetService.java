@@ -43,8 +43,9 @@ public class PasswordResetService {
         if (user == null || !user.isVerified()) {
             return;
         }
-        Optional<EmailVerification> last = verifications
-                .findFirstByUserAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user, PURPOSE);
+        // The database refuses a new code within 60 seconds of ANY earlier code of this user
+        // (registration or reset, used or not), so we check the newest code of any kind.
+        Optional<EmailVerification> last = verifications.findFirstByUserOrderByCreatedAtDesc(user);
         if (last.isPresent()) {
             long age = Duration.between(last.get().getCreatedAt(), Instant.now()).getSeconds();
             if (age < RESEND_SECONDS) {
